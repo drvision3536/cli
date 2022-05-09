@@ -185,6 +185,15 @@ type Codespace struct {
 	PendingOperationDisabledReason string              `json:"pending_operation_disabled_reason"`
 	IdleTimeoutNotice              string              `json:"idle_timeout_notice"`
 	WebURL                         string              `json:"web_url"`
+	Name                           string              `json:"name"`
+	CreatedAt                      string              `json:"created_at"`
+	LastUsedAt                     string              `json:"last_used_at"`
+	Owner                          User                `json:"owner"`
+	Repository                     Repository          `json:"repository"`
+	State                          string              `json:"state"`
+	GitStatus                      CodespaceGitStatus  `json:"git_status"`
+	Connection                     CodespaceConnection `json:"connection"`
+	DisplayName                    string              `json:"display_name"`
 }
 
 type CodespaceGitStatus struct {
@@ -377,6 +386,23 @@ func (a *API) GetCodespace(ctx context.Context, codespaceName string, includeCon
 	}
 
 	return &response, nil
+}
+
+// UpdateCodespaceParams are the parameters for updating a Codespace.
+type UpdateCodespaceParams struct {
+	DisplayName string
+	MachineType string
+}
+
+func (a *API) UpdateCodespace(ctx context.Context, codespaceName string, params *UpdateCodespaceParams) error {
+	// Do the update whee...
+}
+
+func (a *API) RenameCodespace(ctx context.Context, codespaceName string, newName string) error {
+	a.UpdateCodespace(ctx, codespaceName, &api.UpdateCodespaceParams{
+		DisplayName: newName,
+		MachineType: nil,
+	})
 }
 
 // StartCodespace starts a codespace for the user.
